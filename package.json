@@ -1,12 +1,12 @@
 {
-  "name": "generator-bigzeta-npm",
+  "name": "generator-bigzeta-react-component",
   "version": "0.0.0-semantic-release",
-  "description": "Generator to create an NPM Package in our defined format",
+  "description": "Generator to create an React Component Package in our defined format",
   "license": "UNLICENSED",
   "main": "generators/app/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BigZeta/generator-bigzeta-npm.git"
+    "url": "https://github.com/BigZeta/generator-bigzeta-react-component.git"
   },
   "author": {
     "name": "Ed Henderson",
@@ -28,6 +28,7 @@
   ],
   "dependencies": {
     "lodash": "4.13.1",
+    "underscore.string": "3.3.4",
     "yeoman-generator": "0.23.4",
     "yosay": "1.2.0"
   },

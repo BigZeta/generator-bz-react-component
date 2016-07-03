@@ -4,6 +4,7 @@ var generators = require('yeoman-generator');
 var path = require('path');
 var yosay = require('yosay');
 var _ = require('lodash');
+_.mixin(require('underscore.string').exports());
 
 var QUESTIONS = [{
     type: 'input',
@@ -48,31 +49,86 @@ var QUESTIONS = [{
 }];
 
 module.exports = generators.Base.extend({
+    initializing: function () {
+        this.pkg = require('../../package.json');
+        this.appname = this.arguments[0] || this.appname;
+
+        console.log(this.appname);
+
+    },
+
     prompting: function() {
         this.log(yosay('BigZeta ES6 npm module generator with:mocha, semver, etc.!'));
         return this.prompt(QUESTIONS).then(function(answers) {
             this.answers = answers;
             this.useReact = answers.useReact;
             this.license = "UNLICENSED";
+            this.slug = _.slugify(this.appname);
+            this.libname = _.capitalize(_.camelize(_.slugify(_.humanize(this.appname))));
+            this.context = {
+                answers: this.answers,
+                appname: this.appname,
+                slug: this.slug,
+                libname: this.libname
+            }
         }.bind(this));
     },
 
-    writing: function() {
-        this.directory('src', 'src');
-        this.directory('test', 'test');
-        this.copy('babelrc', '.babelrc');
-        this.copy('eslintrc', '.eslintrc');
-        this.copy('editorconfig', '.editorconfig');
-        this.copy('gitignore', '.gitignore');
-        this.copy('npmignore', '.npmignore');
-        if (this.useReact) {
-            this.copy('package.json', 'package.json');
-        } else {
-            this.copy('package.json', 'package.json');
+    writing: {
+        app: function() {
+
+            this.fs.copyTpl(
+                this.templatePath('_package.json'),
+                this.destinationPath('package.json'),
+                this.context
+            );
+            // this.fs.copyTpl(
+            //     this.templatePath('_README.md'),
+            //     this.destinationPath('README.md'),
+            //     { answers: this.answers, appname: this.appname, slug: this.slug, libname: this.libname }
+            // );
+            this.fs.copyTpl(
+                this.templatePath('_webpack.config.js'),
+                this.destinationPath('webpack.config.js'),
+                this.context
+            );
+            this.fs.copy(
+                this.templatePath('karma.conf.js'),
+                this.destinationPath('karma.conf.js')
+            );
+            this.fs.copyTpl(
+                this.templatePath('_index.html'),
+                this.destinationPath('index.html'),
+                this.context
+            );
+            this.copy('babelrc', '.babelrc');
+            this.copy('eslintrc', '.eslintrc');
+            this.copy('editorconfig', '.editorconfig');
+            this.copy('gitignore', '.gitignore');
+            this.copy('npmignore', '.npmignore');
+            this.copy('LICENSE.md', 'LICENSE.md');
+            this.copy('_README.md', 'README.md');
+            this.copy('_travis.yml', '.travis.yml');
+        },
+
+        lib: function() {
+            this.fs.copyTpl(
+                this.templatePath('src/_index.js'),
+                this.destinationPath('src/index.js'),
+                this.context
+            );
+            this.fs.copyTpl(
+                this.templatePath('src/_main-component.jsx'),
+                this.destinationPath('src/' + this.slug + '.jsx'),
+                this.context
+            );
+            this.fs.copyTpl(
+                this.templatePath('src/_main-component.scss'),
+                this.destinationPath('src/' + this.slug + '.scss'),
+                this.context
+            );
+            this.directory('test', 'test');
         }
-        this.copy('README.md', 'README.md');
-        this.copy('LICENSE.md', 'LICENSE.md');
-        this.copy('travis.yml', '.travis.yml');
     },
 
     install: function() {
