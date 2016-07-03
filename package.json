@@ -1,0 +1,54 @@
+{
+  "name": "generator-bigzeta-npm",
+  "version": "0.0.0-semantic-release",
+  "description": "Generator to create an NPM Package in our defined format",
+  "license": "UNLICENSED",
+  "main": "generators/app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BigZeta/generator-bigzeta-npm.git"
+  },
+  "author": {
+    "name": "Ed Henderson",
+    "email": "ed@bigzeta.com",
+    "url": "https://github.com/kutenai"
+  },
+  "scripts": {
+    "coveralls": "cat coverage/lcov.info | coveralls",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "test": "istanbul cover _mocha"
+  },
+  "keywords": [
+    "yeoman-generator",
+    "boilerplate",
+    "scaffolder",
+    "npm",
+    "module",
+    "ES6"
+  ],
+  "dependencies": {
+    "lodash": "4.13.1",
+    "yeoman-generator": "0.23.4",
+    "yosay": "1.2.0"
+  },
+  "devDependencies": {
+    "coveralls": "2.11.9",
+    "cz-conventional-changelog": "1.1.6",
+    "istanbul": "0.4.4",
+    "mocha": "2.5.3",
+    "semantic-release": "4.3.5",
+    "yeoman-assert": "2.2.1",
+    "yeoman-test": "1.4.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "publisConfig": {
+    "tag": "latest"
+  },
+  "release": {
+    "branch": "master"
+  }
+}
