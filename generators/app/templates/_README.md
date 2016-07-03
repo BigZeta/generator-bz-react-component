@@ -9,14 +9,14 @@
 Install it via npm:
 
 ```shell
-npm install @<%= answers['module:scope']%>/<%= answers['module:name'] %>
+npm install @<%= answers['module:scope']%>/<%= slug %>
 ```
 
 And include in your project:
 
 ```javascript
-var localvar = require('<%= answers['module:name'] %>');
-import <%= answers['module:name'] %> from '<%= answers['module:name'] %>';
+var localvar = require('<%= slug %>');
+import <%= libname %> from '<%= slug %>';
 ```
 
 ## License

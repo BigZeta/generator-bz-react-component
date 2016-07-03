@@ -13,9 +13,9 @@ var QUESTIONS = [{
     default: 'bigzeta'
 }, {
     type: 'input',
-    name: 'module:name',
-    message: 'Module name',
-    default: 'mynpm'
+    name: 'component',
+    message: 'Component Name',
+    default: 'MyReactComponent'
 }, {
     type: 'input',
     name: 'module:description',
@@ -127,7 +127,30 @@ module.exports = generators.Base.extend({
                 this.destinationPath('src/' + this.slug + '.scss'),
                 this.context
             );
-            this.directory('test', 'test');
+        },
+        spec: function() {
+            this.fs.copyTpl(
+                this.templatePath('spec/_main-component.spec.jsx'),
+                this.destinationPath('spec/' + this.slug + '.spec.jsx'),
+                this.context
+            );
+            this.fs.copy(
+                this.templatePath('spec/spec-helper.js'),
+                this.destinationPath('spec/spec-helper.js')
+            );
+        },
+
+        test: function() {
+            this.fs.copyTpl(
+                this.templatePath('test/functional/_functional.test.js'),
+                this.destinationPath('test/functional/' + this.slug + '.test.jsx'),
+                this.context
+            );
+            this.fs.copyTpl(
+                this.templatePath('test/unit/_unit.test.js'),
+                this.destinationPath('test/unit/' + this.slug + '.test.jsx'),
+                this.context
+            );
         }
     },
 

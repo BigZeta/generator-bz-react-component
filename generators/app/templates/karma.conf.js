@@ -37,7 +37,7 @@ module.exports = function(config) {
 
 
 /**
-  Loads configuration while ensuring sounce-map is enabled
+  Loads configuration while ensuring source-map is enabled
  */
 function loadWebpackConfig () {
   var webpackConfig = require('./webpack.config.js');

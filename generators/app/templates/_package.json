@@ -1,5 +1,5 @@
 {
-  "name": "@<%= answers['module:scope'] %>/<%= answers['module:name'] %>",
+  "name": "@<%= answers['module:scope'] %>/<%= slug %>",
   "description": "<%= answers['module:description'] %>",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es2015.js",
@@ -85,6 +85,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<%= answers['module:scope'] %>/<%= answers['module:name'] %>.git"
+    "url": "https://github.com/<%= answers['module:scope'] %>/<%= slug %>.git"
   }
 }
