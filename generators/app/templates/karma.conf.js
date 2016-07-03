@@ -15,7 +15,9 @@ module.exports = function(config) {
 
       'spec/spec-helper.js',
       'spec/**/*.spec.*',
-      { pattern: 'lib/**/*', watched: true, included: false }
+      'test/**/*.test.*',
+      { pattern: 'src/**/*', watched: true, included: false },
+      { pattern: 'test/**/*', watched: true, included: false }
     ],
 
     preprocessors: {

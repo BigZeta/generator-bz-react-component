@@ -16,6 +16,7 @@
     "no-mixed-requires": [0],
     "no-underscore-dangle": [0],
     "no-use-before-define": [2, "nofunc"],
+    "no-unused-vars": [1, {"vars": "local", "varsIgnorePattern": "should"}],
 
     "no-alert": 0,
 

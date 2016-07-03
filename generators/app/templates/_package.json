@@ -10,7 +10,7 @@
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "test:watch": "npm t -- -w",
     "test": "mocha test/unit test/functional  --compilers js:babel-register",
-    "test:karma": "eslint lib/ spec/ && ./node_modules/karma/bin/karma start karma.conf.js",
+    "test:karma": "eslint src/ spec/ test/ && ./node_modules/karma/bin/karma start karma.conf.js",
     "test:karma:watch": "./node_modules/karma/bin/karma start karma.conf.js --auto-watch --no-single-run",
     "cover": "nyc npm t",
     "prebuild": "rimraf dist",
