@@ -1,0 +1,42 @@
+machine:
+  node:
+    version: 6.10.3
+
+dependencies:
+  pre:
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+    - google-chrome --version
+    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    - sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - sudo apt-get update
+    - sudo apt-get --only-upgrade install google-chrome-stable
+    - google-chrome --version
+    - curl -o- -L https://yarnpkg.com/install.sh | bash
+
+test:
+  pre:
+    - npm update @bigzeta/project-editor
+    - npm run compile:prod
+
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - npm run test:
+        environment:
+          JEST_JUNIT_OUTPUT: $CIRCLE_TEST_REPORTS/junit/junit.xml
+
+    - npm run coverage
+
+  post:
+    - mv coverage $CIRCLE_ARTIFACTS/coverage
+    - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+
+deployment:
+  test:
+
+    branch: develop
+    commands:
+      - npm run build
+      - npm version prerelease -m 'Update beta build version [ci skip]'
+      - npm publish --tag=beta
+      - git push --set-upstream origin develop
+      - git push --tags

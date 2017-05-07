@@ -24,6 +24,9 @@
 
 work
 build
+dist
+dist.dev
+dist.prod
 src
 test
 pids

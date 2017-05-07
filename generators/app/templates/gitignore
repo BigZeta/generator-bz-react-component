@@ -28,6 +28,8 @@ bower_components
 
 # Babel compiled sources
 lib
+assets
+es6
 
 # Miscellaneous
 *~

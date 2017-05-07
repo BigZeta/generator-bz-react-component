@@ -1,5 +1,5 @@
 import React from 'react';
-import './<%= slug %>.scss';
+import './static/scss/<%= slug %>.scss';
 
 
 export default React.createClass({

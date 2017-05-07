@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+node_modules
+dist
+/__test__/__snapshots__
+/coverage
+/npm-debug.log
+/dist.dev
+/dist.prod
+/webpack-assets.json
+/webpack-stats-local.json
+/yarn-error.log

@@ -1,13 +1,16 @@
 {
-  "name": "generator-bigzeta-react-component",
-  "version": "0.0.0-semantic-release",
-  "description": "Generator to create an React Component Package in our defined format",
-  "license": "UNLICENSED",
+  "name": "generator-bz-react-component",
+  "version": "0.1.0",
+  "description": "Generator to create an React Component Package",
+  "license": "MIT",
   "main": "generators/app/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/BigZeta/generator-bigzeta-react-component.git"
+    "url": "https://github.com/BigZeta/generator-bz-react-component.git"
   },
+  "files": [
+    "generators/app"
+  ],
   "author": {
     "name": "Ed Henderson",
     "email": "ed@bigzeta.com",
@@ -27,19 +30,19 @@
     "ES6"
   ],
   "dependencies": {
-    "lodash": "4.13.1",
+    "lodash": "^4.17.4",
     "underscore.string": "3.3.4",
-    "yeoman-generator": "0.23.4",
-    "yosay": "1.2.0"
+    "yeoman-generator": "^1.1.1",
+    "yosay": "^2.0.0"
   },
   "devDependencies": {
-    "coveralls": "2.11.9",
-    "cz-conventional-changelog": "1.1.6",
-    "istanbul": "0.4.4",
-    "mocha": "2.5.3",
-    "semantic-release": "4.3.5",
-    "yeoman-assert": "2.2.1",
-    "yeoman-test": "1.4.0"
+    "coveralls": "^2.13.1",
+    "cz-conventional-changelog": "^2.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.3.0",
+    "semantic-release": "^6.3.6",
+    "yeoman-assert": "^3.0.0",
+    "yeoman-test": "^1.6.0"
   },
   "config": {
     "commitizen": {
