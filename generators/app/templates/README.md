@@ -11,14 +11,14 @@
     Place codecov badge here 
 
 # About
-  @<%= module:scope %>/<%= component %>
+    @<%= answers["module:scope"] %>/<%= slug %>
 
 ## Getting Started
 
 Install it via npm:
 
 ```shell
-npm install @<%= module:scope %>/<%= slug %>
+npm install @<%= answers["module:scope"] %>/<%= slug %>
 ```
 
 And include in your project:
@@ -30,5 +30,5 @@ import <%= libname %> from '<%= slug %>';
 
 ## License
 
-<%= module:license %>
+<%= answers["license"] %>
 
