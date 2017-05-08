@@ -30,6 +30,9 @@ bower_components
 lib
 assets
 es6
+dist.dev
+dist.prod
+
 
 # Miscellaneous
 *~
