@@ -193,18 +193,6 @@ module.exports = class extends Generator {
             this.destinationPath('__test__/' + this.slug + '.spec.js'),
             this.context
         )
-        this.fs.copy(
-            this.templatePath('__test__/unit.test.js'),
-            this.destinationPath('__test__/unit.test.js')
-        )
-        this.fs.copy(
-            this.templatePath('__test__/spec-helper.js'),
-            this.destinationPath('__test__/spec-helper.js')
-        )
-        this.fs.copy(
-            this.templatePath('__test__/mocha.opts'),
-            this.destinationPath('__test__/mocha.opts')
-        )
     }
 
     install() {

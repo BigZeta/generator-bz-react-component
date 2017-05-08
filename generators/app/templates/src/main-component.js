@@ -1,9 +1,9 @@
 import React from 'react';
-import './static/scss/<%= slug %>.scss';
 
+class <%= answers['component'] %> extends React.Component {
+    render() {
+        return <div className="synoptic-chart">Hello World</div>;
+    }
+}
 
-export default React.createClass({
-  render: function() {
-    return <div className="<%= slug %>">Hello World</div>;
-  }
-});
+export default <%= answers['component'] %>

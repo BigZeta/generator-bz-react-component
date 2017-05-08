@@ -1,16 +1,18 @@
-import React from 'react/addons';
-import <%= libname %> from '../lib/<%= slug %>.jsx';
+import React from 'react'
+import ReactShallowRenderer from 'react-test-renderer/shallow'
 
-describe('<%= libname %>', function() {
-  var component;
+import <%= answers['component'] %> from '../src/<%= slug %>'
 
-  beforeEach(function() {
-    component = React.addons.TestUtils.renderIntoDocument(
-      <<%= libname %>/>
-    );
-  });
+describe('<%= answers['component'] %>', function() {
 
-  it('should render', function() {
-    expect(component.getDOMNode().className).toEqual('<%= slug %>');
+    it('should render', function () {
+        const renderer = new ReactShallowRenderer()
+
+        renderer.render(<<%= answers['component'] %>/>)
+
+        const result = renderer.getRenderOutput()
+
+        expect(result.type).toBe('div')
+        expect(result.props.children).toEqual('Hello World')
   });
 });

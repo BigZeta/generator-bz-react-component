@@ -1,1 +1,1 @@
-module.exports = require('./<%= slug %>.js');
+module.exports = require('./<%= slug %>');
