@@ -1,23 +1,56 @@
-var webpack = require('webpack');
-var path = require('path');
-var ManifestPlugin = require('webpack-manifest-plugin');
-var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
-const WebpackMd5Hash = require('webpack-md5-hash');
+import webpack from 'webpack'
+import webpackMerge from 'webpack-merge'
+import WebpackMd5Hash from 'webpack-md5-hash'
+import ManifestPlugin from 'webpack-manifest-plugin'
+import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin'
 
 
-module.exports = (env) => {
-    return {
-        context: path.resolve(__dirname, '../'),
+import { join, resolve } from 'path'
+
+import * as partials from './partials'
+
+export const paths = {
+    app: join(__dirname, 'src'),
+    assets: join(__dirname, 'assets'),
+    devapp: join(__dirname, 'dev/src')
+    build: join(__dirname, 'build'),
+    webapp: join(__dirname),
+    cdnlib: join(__dirname)
+}
+
+
+export default env => {
+    return webpackMerge({
+        context: resolve(__dirname, '../'),
         entry: {
             'app': './src/index.js'
         },
         output: {
-            path: path.resolve('dist/js'),
+            path: resolve('dist.prod'),
             filename: '[name]-[hash].js',
             chunkFilename: '[name]-[chunkhash].js',
-            libraryTarget:'var',
-            library:'[name]',
+            libraryTarget: 'window',
+            library: '[name]',
             publicPath: '/static/<%= appname %>/js/'
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.js|\.jsx$/,
+                    use: ['babel-loader'],
+                    exclude: /node_modules/,
+                },
+                {
+                    test: /\.woff(\?.*$|$)/,
+                    use: [
+                        'url-loader?limit=10000&mimetype=application/font-woff',
+                    ],
+                },
+                {
+                    test: /\.(ttf|eot|svg)(\?.*$|$)/,
+                    use: ['file-loader'],
+                },
+            ],
         },
         plugins: [
             // Extract all 3rd party modules into a separate 'vendor' chunk
@@ -30,7 +63,6 @@ module.exports = (env) => {
             // Generate a 'manifest' chunk to be inlined in the HTML template
             new webpack.optimize.CommonsChunkPlugin('manifest'),
 
-
             // Need this plugin for deterministic hashing
             // until this issue is resolved: https://github.com/webpack/webpack/issues/1315
             // for more info: https://webpack.js.org/how-to/cache/
@@ -39,58 +71,17 @@ module.exports = (env) => {
             // This does something anyway
             new ChunkManifestPlugin({
                 filename: 'chunk-manifest.json',
-                manifestVariable: 'webpackManifest'
+                manifestVariable: 'webpackManifest',
             }),
 
             // Creates a manifest file I can use to refer to the generated outputs.
             new ManifestPlugin({
-                publicPath: '/static/<%= appname %>/js/'
-            })
+                publicPath: '/static/<%= appname %>/js/',
+            }),
         ],
-        module: {
-            rules: [
-                {
-                    test: /\.js|\.jsx$/,
-                    use: [
-                        'babel-loader'
-                    ],
-                    exclude: /node_modules/
-                },
-                {
-                    test: /\.css$/,
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader'
-                        }
-                    ]
-                },
-                {
-                    test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                    use: [
-                        'url-loader?limit=10000&mimetype=application/font-woff'
-                    ]
-                },
-                {
-                    test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                    use: [
-                        'file-loader'
-                    ]
-                }
-            ]
-        },
         resolve: {
-            extensions: ['.js', '.jsx', '.css']
-        },
-        externals:{
-            // require("jquery") is external and available
-            //  on the global var jQuery
-            'jquery': 'jQuery',
-            'react': 'React',
-            'react-dom': 'ReactDOM'
+            extensions: ['.js', '.jsx', '.css'],
         }
-    }
-};
+    })
+}
 
