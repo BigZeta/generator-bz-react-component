@@ -6,7 +6,7 @@
   "version": "0.0.0-semantically-released",
   "scripts": {
     "commit": "git-cz",
-    "lint": "eslint *.js test/ src/ development/src/ development/*.js",
+    "lint": "eslint *.js test/ src/ dev/src/ dev/*.js",
     "lint:fix": "npm run lint -- --fix",
     "build": "NODE_ENV=production gulp sass-build && npm run build-cjs && npm run build-es6",
     "build-cjs": "rimraf lib && BABEL_ENV=production babel ./src -d lib --plugins=transform-es2015-modules-commonjs",
