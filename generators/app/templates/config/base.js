@@ -1,5 +1,4 @@
 import webpack from 'webpack'
-import webpackMerge from 'webpack-merge'
 import WebpackMd5Hash from 'webpack-md5-hash'
 import ManifestPlugin from 'webpack-manifest-plugin'
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin'
@@ -7,7 +6,7 @@ import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin'
 import { join, resolve } from 'path'
 
 export default env => {
-    return webpackMerge({
+    return {
         context: resolve(__dirname, '../'),
         entry: {
             'app': './src/index.js'
@@ -69,6 +68,6 @@ export default env => {
         resolve: {
             extensions: ['.js', '.jsx', '.css'],
         }
-    })
+    }
 }
 
