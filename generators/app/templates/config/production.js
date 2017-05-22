@@ -36,6 +36,6 @@ export default env => {
             ],
         },
         partials.extractCSS({ use: 'css-loader'}),
-        partials.loadSCSS({exclude:/node_modules/}),
+        partials.loadSCSS({ exclude:/node_modules/ }),
     );
 };

@@ -4,20 +4,7 @@ import WebpackMd5Hash from 'webpack-md5-hash'
 import ManifestPlugin from 'webpack-manifest-plugin'
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin'
 
-
 import { join, resolve } from 'path'
-
-import * as partials from './partials'
-
-export const paths = {
-    app: join(__dirname, 'src'),
-    assets: join(__dirname, 'assets'),
-    devapp: join(__dirname, 'dev/src')
-    build: join(__dirname, 'build'),
-    webapp: join(__dirname),
-    cdnlib: join(__dirname)
-}
-
 
 export default env => {
     return webpackMerge({

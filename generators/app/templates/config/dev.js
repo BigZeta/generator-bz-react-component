@@ -4,8 +4,14 @@ import BundleTracker from 'webpack-bundle-tracker'
 import webpackMerge from 'webpack-merge'
 
 
-import baseConfig, { paths } from './base.js';
-import * as partials from './partials';
+import baseConfig, { paths } from './base.js'
+
+import * as partials from './partials'
+
+const DOMAIN = 'localhost'
+const PORT = 8080
+const PROTOCOL = 'http'
+const BASE = 'dist.dev'
 
 export default env => {
     const strategy = {
@@ -13,17 +19,25 @@ export default env => {
         'output.filename': 'replace',
         'output.path': 'replace',
         'output.libraryTarget': 'replace',
-    };
+    }
 
     return webpackMerge.strategy(strategy)(
         baseConfig(env),
         {
             devtool: 'source-map',
             entry: {
-                'app': './src/index.js'
+                app: [
+                    //React hmr entry
+                    'react-hot-loader/patch',
+                    //Dev server bundle
+                    `webpack-dev-server/client?${PROTOCOL}://${DOMAIN}:${PORT}`,
+                    //Only reload successful updates
+                    'webpack/hot/only-dev-server',
+                    join(__dirname, '../dev/index.js'),
+                ]
             },
             output: {
-                path: path.resolve('dist.dev/js'),
+                path: path.resolve(BASE),
                 filename: '[name].js',
                 libraryTarget: 'var',
             },
@@ -46,7 +60,14 @@ export default env => {
                 }),
             ],
         },
-        partials.loadCSS({exclude:/node_modules/}),
-        partials.loadSCSS({exclude:/node_modules/}),
-    );
-};
+        partials.loadCSS(),
+        partials.loadSCSS(),
+        partials.htmlWebpack('./dev/templates'),
+        partials.devServer({ 
+            hot: true, 
+            host: DOMAIN, 
+            port: PORT, 
+            base: BASE
+        })
+    )
+}
