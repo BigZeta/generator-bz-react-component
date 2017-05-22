@@ -1,6 +1,6 @@
 import webpack from 'webpack'
 import path from 'path'
-import webpackMerge from 'webpack-merge'
+import merge from 'webpack-merge'
 import BundleTracker from 'webpack-bundle-tracker'
 
 import baseConfig, { paths } from './base.js';
@@ -13,7 +13,7 @@ export default env => {
         'output.path': 'replace',
     };
 
-    return webpackMerge.strategy(strategy)(
+    return merge.strategy(strategy)(
         baseConfig(env),
         {
             devtool: 'source-map',
