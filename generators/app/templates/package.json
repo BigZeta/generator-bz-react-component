@@ -12,7 +12,7 @@
     "build-cjs": "rimraf lib && BABEL_ENV=production babel ./src -d lib --plugins=transform-es2015-modules-commonjs",
     "build-es6": "rimraf es6 && babel ./src -d es6",
     "compile:dev": "webpack --env=dev --progress --profile --colors",
-    "compile:dev:watch": "rimraf dist.dev/js/ && webpack --env=dev --progress --profile --colors --watch",
+    "compile:dev:watch": "rimraf dist.dev/js/ && webpack-dev-server --env=dev --progress --profile --colors --watch",
     "start": "webpack --env=devserver --progress --profile --colors",
     "compile:prod": "rimraf dist.proj/js/ && webpack -p --env=production --profile --colors",
     "compile:prodtest": "rimraf dist.prod/js/ && webpack -p --env=production --profile --colors",

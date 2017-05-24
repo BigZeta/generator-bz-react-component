@@ -1,11 +1,17 @@
 import webpack from 'webpack'
 import { join, resolve } from 'path'
 import BundleTracker from 'webpack-bundle-tracker'
-import webpackMerge from 'webpack-merge'
+import merge from 'webpack-merge'
 
 
-import baseConfig, { paths } from './base.js';
-import * as partials from './partials';
+import baseConfig, { paths } from './base.js'
+paths.build = path.resolve('../dist.dev');
+
+import * as partials from './partials'
+
+const DOMAIN = 'localhost'
+const PORT = 8080
+const PROTOCOL = 'http'
 
 export default env => {
     const strategy = {
@@ -13,9 +19,9 @@ export default env => {
         'output.filename': 'replace',
         'output.path': 'replace',
         'output.libraryTarget': 'replace',
-    };
+    }
 
-    return webpackMerge.strategy(strategy)(
+    return merge.strategy(strategy)(
         baseConfig(env),
         {
             devtool: 'source-map',
@@ -23,7 +29,7 @@ export default env => {
                 'app': './src/index.js'
             },
             output: {
-                path: path.resolve('dist.dev/js'),
+                path: paths.build,
                 filename: '[name].js',
                 libraryTarget: 'var',
             },
@@ -46,7 +52,14 @@ export default env => {
                 }),
             ],
         },
-        partials.loadCSS({exclude:/node_modules/}),
-        partials.loadSCSS({exclude:/node_modules/}),
-    );
-};
+        partials.loadCSS(),
+        partials.loadSCSS(),
+        partials.htmlWebpack('./dev/templates'),
+        partials.devServer({ 
+            hot: true, 
+            host: DOMAIN, 
+            port: PORT, 
+            base: paths.build
+        })
+    )
+}

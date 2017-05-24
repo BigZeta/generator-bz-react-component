@@ -3,10 +3,10 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
-// Other Stuff
-export const devServer = ({ host, port, paths } = {}) => ({
+export const devServer = ({ hot, host, port, base } = {}) => ({  
     devServer: {
-        contentBase: paths.base,
+        hot,
+        contentBase: base,
         historyApiFallback: true,
         stats: 'errors-only',
         host, // Defaults to `localhost`
@@ -16,7 +16,7 @@ export const devServer = ({ host, port, paths } = {}) => ({
             warnings: true,
         },
     },
-});
+})
 
 // Module Rules
 export const loadCSS = ({ include, exclude } = {}) => ({
@@ -29,19 +29,12 @@ export const loadCSS = ({ include, exclude } = {}) => ({
 
                 use: [
                     'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            // Keep class definitions local to files.
-                            // https://github.com/webpack-contrib/css-loader
-                            module: true,
-                        },
-                    },
+                    'css-loader'
                 ],
             },
         ],
     },
-});
+})
 
 export const loadSCSS = ({ include, exclude } = {}) => ({
     module: {
@@ -76,18 +69,19 @@ export const lintJavaScript = ({ include, exclude, options }) => ({
             },
         ],
     },
-});
+})
 
 // PLUGINS
-export const htmlWebpack = paths => ({
+export const htmlWebpack = dir => ({
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'BigZeta Project Editor',
+            title: 'Welcome to <%= appname %>',
+            inject: 'body',
             filename: path.join(paths.build, 'index.html'),
-            template: './dev/server/index.ejs',
+            template: path.join(__dirname, '../dev/templates/index.ejs'),
         }),
     ],
-});
+})
 
 export const extractCSS = ({ include, exclude, use }) => {
     // Output extracted CSS to a file
@@ -112,7 +106,7 @@ export const extractCSS = ({ include, exclude, use }) => {
         },
         plugins: [plugin],
     };
-};
+}
 
 export const copyAssets = paths => ({
     plugins: [
@@ -163,4 +157,4 @@ export const copyAssets = paths => ({
             }
         ),
     ],
-});
+})
