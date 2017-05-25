@@ -1,97 +1,48 @@
 import webpack from 'webpack'
-import path from 'path'
-import webpackMerge from 'webpack-merge'
-import BundleTracker from 'webpack-bundle-tracker'
-import nodeExternals from 'webpack-node-externals'
-import Visualizer from 'webpack-visualizer-plugin'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
+import { join, resolve } from 'path'
+import merge from 'webpack-merge'
 
-import baseConfig, { paths } from './base.js'
+import devConfig from './dev'
 import * as partials from './partials'
+import { paths } from './base'
 
+const DOMAIN = process.env.DOMAIN || 'localhost'
+const PORT = process.env.PORT || 8080 
+const PROTOCOL = process.env.PROTOCOL || 'http'
 
-/**
- * Unused object
- * 
- */
-const HTMLWebpackPluginConfig = {
-    template: __dirname + '/src/templates',
-};
-
-export default env => {
+export default () => {
     const strategy = {
-        plugins: 'replace',
-        'output.filename': 'replace',
-        output: 'replace',
+        plugins: 'append',
+        entry: 'append'
     };
 
-    return webpackMerge.strategy(strategy)(
-        baseConfig(env),
+    return merge.strategy(strategy)(
         {
             devtool: 'source-map',
             entry: {
-                app: path.resolve('dev/src/index.js'),
-            },
-            output: {
-                path: path.resolve('dist.dev/js'),
-                filename: '[name].js',
-                libraryTarget: 'var',
-                library: '[name]',
-                publicPath: '/static/<%= appname %>/js/',
+                'app': [
+                    //webpack 2 reference
+                    //https://webpack.js.org/guides/hmr-react/
+                    //React hmr entry
+                    'react-hot-loader/patch',
+                    //Dev server bundle
+                    `webpack-dev-server/client?${PROTOCOL}://${DOMAIN}:${PORT}`,
+                    //Only reload successful updates
+                    'webpack/hot/only-dev-server',
+                    join(__dirname, '../dev/index.js')
+                ]
             },
             plugins: [
-                // Extract all 3rd party modules into a separate 'vendor' chunk
-                // Wait -- will this exclude the RPE also? Probably!
-                new webpack.optimize.CommonsChunkPlugin({
-                    name: 'vendor',
-                    minChunks: ({ resource }) => /node_modules/.test(resource),
-                }),
-
-                // Generate a 'manifest' chunk to be inlined in the HTML template
-                new webpack.optimize.CommonsChunkPlugin('manifest'),
-
-                // Creates a manifest file that is Django compatible and read by the Django modules
-                new BundleTracker({
-                    //path: path.resolve('lib'),
-                    path: 'lib',
-                    filename: 'webpack-stats.json',
-                    logTime: false,
-                    indent: 4,
-                }),
-                new webpack.HotModuleReplacementPlugin(),
-                new Visualizer({
-                    filename: './statistics.html',
-                }),
+                new webpack.HotModuleReplacementPlugin(), 
             ],
-            module: {
-                rules: [
-                    {
-                        test: /\.scss$/,
-                        loader: 'style!css!sass',
-                    },
-                    {
-                        test: /\.(html|njk|nunjucks)$/,
-                        loader: 'nunjucks-loader',
-                        query: {
-                            jinjaCompat: true,
-                        },
-                    },
-                ],
-            },
         },
-        partials.devServer({
-            host: process.env.HOST,
-            port: process.env.PORT,
-            paths: paths,
+        //We do not have sass in this project
+        partials.devServer({ 
+            hot: true, 
+            host: DOMAIN, 
+            port: PORT, 
+            base: paths.base
         }),
-        partials.htmlWebpack(paths),
-        partials.copyAssets(paths),
-        {
-            plugins: [
-                new webpack.DefinePlugin({
-                    DEV_LOGGING: JSON.stringify(true),
-                }),
-            ],
-        }
+        partials.htmlWebpack('./dev/templates')
     )
 }

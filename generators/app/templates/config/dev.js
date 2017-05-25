@@ -5,39 +5,27 @@ import merge from 'webpack-merge'
 
 
 import baseConfig, { paths } from './base.js'
-
 import * as partials from './partials'
+import devServerConfig from './devserver'
 
-const DOMAIN = 'localhost'
-const PORT = 8080
-const PROTOCOL = 'http'
-const BASE = 'dist.dev'
-
-export default env => {
+export default ({ env, serve }) => {
     const strategy = {
         plugins: 'append',
-        'output.filename': 'replace',
-        'output.path': 'replace',
-        'output.libraryTarget': 'replace',
+        output: 'replace',
+        entry: 'replace',
+        module: 'append'
     }
-
     return merge.strategy(strategy)(
-        baseConfig(env),
+        baseConfig(),
         {
             devtool: 'source-map',
             entry: {
-                app: [
-                    //React hmr entry
-                    'react-hot-loader/patch',
-                    //Dev server bundle
-                    `webpack-dev-server/client?${PROTOCOL}://${DOMAIN}:${PORT}`,
-                    //Only reload successful updates
-                    'webpack/hot/only-dev-server',
+                'app': [
                     join(__dirname, '../dev/index.js'),
                 ]
             },
             output: {
-                path: path.resolve(BASE),
+                path: resolve('dist.dev/js'),
                 filename: '[name].js',
                 libraryTarget: 'var',
             },
@@ -45,29 +33,24 @@ export default env => {
                 // Creates a manifest file that is Django compatible and read by the Django modules
                 new BundleTracker({
                     //path: path.resolve('lib'),
-                    path: 'lib',
+                    path: resolve('dist.dev'),
                     filename: 'webpack-stats.json',
                     logTime: false,
                     indent: 4,
                 }),
             ],
         },
-        partials.copyAssets(paths),
         {
             plugins: [
-                new webpack.DefinePlugin({
-                    DEV_LOGGING: JSON.stringify(true),
-                }),
+                new webpack.EnvironmentPlugin({
+                    DEV_LOGGING: true,
+                    NODE_ENV: env
+                })
             ],
         },
+        //We do not have sass in this project
         partials.loadCSS(),
-        partials.loadSCSS(),
-        partials.htmlWebpack('./dev/templates'),
-        partials.devServer({ 
-            hot: true, 
-            host: DOMAIN, 
-            port: PORT, 
-            base: BASE
-        })
+        // activate devserver
+        serve ? devServerConfig() : {}
     )
 }
