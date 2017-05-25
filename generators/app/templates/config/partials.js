@@ -72,17 +72,15 @@ export const lintJavaScript = ({ include, exclude, options }) => ({
 });
 
 // PLUGINS
-export const htmlWebpack = dir => {
-    return { 
-        plugins: [
-            new HtmlWebpackPlugin({
-                title: 'synoptic-modal',
-                inject: 'body',
-                template: path.join(dir, 'index.ejs')
-            }),
-        ],
-    }
-};
+export const htmlWebpack = dir => ({
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Welcome to <%= appname %>',
+            inject: 'body',
+            template: path.join(__dirname, '../dev/templates/index.ejs'),
+        }),
+    ],
+})
 
 export const extractCSS = ({ include, exclude, use }) => {
     // Output extracted CSS to a file

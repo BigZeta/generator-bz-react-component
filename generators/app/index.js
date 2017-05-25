@@ -112,14 +112,20 @@ module.exports = class extends Generator {
         )
 
         this.fs.copyTpl(
+            this.templatePath('dev/templates/index.ejs'),
+            this.destinationPath('dev/templates/index.ejs'),
+            this.context
+        )
+
+        this.fs.copyTpl(
             this.templatePath('README.md'),
             this.destinationPath('README.md'),
             this.context
         )
 
         this.fs.copyTpl(
-            this.templatePath('webpack.config.js'),
-            this.destinationPath('webpack.config.js'),
+            this.templatePath('webpack.config.babel.js'),
+            this.destinationPath('webpack.config.babel.js'),
             this.context
         )
         this.fs.copyTpl(
@@ -128,13 +134,23 @@ module.exports = class extends Generator {
             this.context
         )
         this.fs.copyTpl(
-            this.templatePath('config/development.js'),
-            this.destinationPath('config/development.js'),
+            this.templatePath('config/dev.js'),
+            this.destinationPath('config/dev.js'),
+            this.context
+        )
+        this.fs.copyTpl(
+            this.templatePath('config/devserver.js'),
+            this.destinationPath('config/devserver.js'),
             this.context
         )
         this.fs.copyTpl(
             this.templatePath('config/production.js'),
             this.destinationPath('config/production.js'),
+            this.context
+        )
+        this.fs.copyTpl(
+            this.templatePath('config/partials.js'),
+            this.destinationPath('config/partials.js'),
             this.context
         )
         this.fs.copy(

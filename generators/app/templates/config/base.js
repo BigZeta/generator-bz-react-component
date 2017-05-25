@@ -5,6 +5,16 @@ import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin'
 
 import { join, resolve } from 'path'
 
+export const paths = {
+    app: join(__dirname, 'src'),
+    assets: join(__dirname, 'assets'),
+    devapp: join(__dirname, 'dev/src'),
+    build: join(__dirname, 'build'),
+    dist: join(__dirname, 'dist.prod'),
+    webapp: join(__dirname),
+    cdnlib: join(__dirname)
+}
+
 export default env => {
     return {
         context: resolve(__dirname, '../'),
@@ -12,7 +22,7 @@ export default env => {
             'app': './src/index.js'
         },
         output: {
-            path: resolve('dist.prod'),
+            path: resolve(paths.dist),
             filename: '[name]-[hash].js',
             chunkFilename: '[name]-[chunkhash].js',
             libraryTarget: 'window',

@@ -2,7 +2,7 @@ import React from 'react';
 
 class <%= answers['component'] %> extends React.Component {
     render() {
-        return <div className="synoptic-chart">Hello World</div>;
+        return <div className="">Hello World</div>;
     }
 }
 
