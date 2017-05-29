@@ -28,8 +28,7 @@ export default () => {
                     //Dev server bundle
                     `webpack-dev-server/client?${PROTOCOL}://${DOMAIN}:${PORT}`,
                     //Only reload successful updates
-                    'webpack/hot/only-dev-server',
-                    join(__dirname, '../dev/index.js')
+                    'webpack/hot/only-dev-server'
                 ]
             },
             plugins: [
@@ -43,6 +42,6 @@ export default () => {
             port: PORT, 
             base: paths.base
         }),
-        partials.htmlWebpack('./dev/templates')
+        partials.htmlWebpack(join(paths.devapp, './templates'))
     )
 }

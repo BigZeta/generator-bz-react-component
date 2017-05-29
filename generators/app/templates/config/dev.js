@@ -8,7 +8,9 @@ import baseConfig, { paths } from './base.js'
 import * as partials from './partials'
 import devServerConfig from './devserver'
 
-export default ({ env, serve }) => {
+paths.build = resolve('../dist.dev')
+
+export default ({ env, options: { watch } }) => {
     const strategy = {
         plugins: 'append',
         output: 'replace',
@@ -21,19 +23,18 @@ export default ({ env, serve }) => {
             devtool: 'source-map',
             entry: {
                 'app': [
-                    join(__dirname, '../dev/index.js'),
+                    join(paths.devapp, 'index.js'),
                 ]
             },
             output: {
-                path: resolve('dist.dev/js'),
+                path: paths.build,
                 filename: '[name].js',
                 libraryTarget: 'var',
             },
             plugins: [
                 // Creates a manifest file that is Django compatible and read by the Django modules
                 new BundleTracker({
-                    //path: path.resolve('lib'),
-                    path: resolve('dist.dev'),
+                    path: paths.lib,
                     filename: 'webpack-stats.json',
                     logTime: false,
                     indent: 4,
@@ -51,6 +52,6 @@ export default ({ env, serve }) => {
         //We do not have sass in this project
         partials.loadCSS(),
         // activate devserver
-        serve ? devServerConfig() : {}
+        watch ? devServerConfig() : {}
     )
 }

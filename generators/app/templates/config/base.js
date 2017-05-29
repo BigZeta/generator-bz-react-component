@@ -8,18 +8,19 @@ import { join, resolve } from 'path'
 export const paths = {
     app: join(__dirname, 'src'),
     assets: join(__dirname, 'assets'),
-    devapp: join(__dirname, 'dev/src'),
+    devapp: join(__dirname, 'dev'),
     build: join(__dirname, 'build'),
     dist: join(__dirname, 'dist.prod'),
     webapp: join(__dirname),
-    cdnlib: join(__dirname)
+    cdnlib: join(__dirname),
+    lib: join(__dirname, 'lib')
 }
 
 export default env => {
     return {
         context: resolve(__dirname, '../'),
         entry: {
-            'app': './src/index.js'
+            'app': paths.app
         },
         output: {
             path: resolve(paths.dist),

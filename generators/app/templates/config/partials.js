@@ -77,7 +77,7 @@ export const htmlWebpack = dir => ({
         new HtmlWebpackPlugin({
             title: 'Welcome to <%= appname %>',
             inject: 'body',
-            template: path.join(__dirname, '../dev/templates/index.ejs'),
+            template: dir + 'index.ejs',
         }),
     ],
 })

@@ -18,7 +18,7 @@ export default env => {
         {
             devtool: 'source-map',
             output: {
-                path: path.resolve('dist.prod/js'),
+                path: paths.dist,
                 filename: '[name]-[chunkhash].js',
             },
             plugins: [
