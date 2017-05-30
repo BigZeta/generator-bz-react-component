@@ -1,4 +1,3 @@
-export default env => {
-    return require(`./config/${env}.js`)({env: env})
+export default (env, options) => {
+    return require('./config/' + env + '.js').default({ env, options })
 }
-

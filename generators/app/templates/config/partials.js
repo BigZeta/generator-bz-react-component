@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
+// Other Stuff
 export const devServer = ({ hot, host, port, base } = {}) => ({  
     devServer: {
         hot,
@@ -16,7 +17,7 @@ export const devServer = ({ hot, host, port, base } = {}) => ({
             warnings: true,
         },
     },
-})
+});
 
 // Module Rules
 export const loadCSS = ({ include, exclude } = {}) => ({
@@ -34,7 +35,7 @@ export const loadCSS = ({ include, exclude } = {}) => ({
             },
         ],
     },
-})
+});
 
 export const loadSCSS = ({ include, exclude } = {}) => ({
     module: {
@@ -46,7 +47,6 @@ export const loadSCSS = ({ include, exclude } = {}) => ({
 
                 use: [
                     'style-loader',
-                    'css-loader',
                     //'postcss-loader',
                     'sass-loader',
                 ],
@@ -69,7 +69,7 @@ export const lintJavaScript = ({ include, exclude, options }) => ({
             },
         ],
     },
-})
+});
 
 // PLUGINS
 export const htmlWebpack = dir => ({
@@ -77,17 +77,14 @@ export const htmlWebpack = dir => ({
         new HtmlWebpackPlugin({
             title: 'Welcome to <%= appname %>',
             inject: 'body',
-            filename: path.join(paths.build, 'index.html'),
-            template: path.join(__dirname, '../dev/templates/index.ejs'),
+            template: dir + 'index.ejs',
         }),
     ],
 })
 
 export const extractCSS = ({ include, exclude, use }) => {
     // Output extracted CSS to a file
-    const plugin = new ExtractTextPlugin({
-        filename: '[name].css',
-    });
+    const plugin = new ExtractTextPlugin('[name].css');
 
     return {
         module: {
@@ -106,7 +103,7 @@ export const extractCSS = ({ include, exclude, use }) => {
         },
         plugins: [plugin],
     };
-}
+};
 
 export const copyAssets = paths => ({
     plugins: [
@@ -157,4 +154,4 @@ export const copyAssets = paths => ({
             }
         ),
     ],
-})
+});
