@@ -3,7 +3,7 @@
   "description": "<%= answers['module:description'] %>",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es2015.js",
-  "version": "0.0.0-semantically-released",
+  "version": "0.1.0",
   "scripts": {
     "commit": "git-cz",
     "lint": "eslint *.js test/ src/ dev/src/ dev/*.js",
@@ -21,9 +21,7 @@
     "test:watch": "npm run test -- --watch",
     "coverage": "NODE_PATH=src jest --coverage",
     "2npm": "publish",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "version": "npm run build",
-    "postversion:manual": "git push && git push --tags",
     "update_snapshot": "NODE_PATH=src jest --updateSnapshot"
   },
   "repository": {
