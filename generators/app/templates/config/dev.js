@@ -5,28 +5,26 @@ import merge from 'webpack-merge'
 
 
 import baseConfig, { paths } from './base.js'
-paths.build = path.resolve('../dist.dev');
-
 import * as partials from './partials'
+import devServerConfig from './devserver'
 
-const DOMAIN = 'localhost'
-const PORT = 8080
-const PROTOCOL = 'http'
+paths.build = resolve('../dist.dev')
 
-export default env => {
+export default ({ env, options: { watch } }) => {
     const strategy = {
         plugins: 'append',
-        'output.filename': 'replace',
-        'output.path': 'replace',
-        'output.libraryTarget': 'replace',
+        output: 'replace',
+        entry: 'replace',
+        module: 'append'
     }
-
     return merge.strategy(strategy)(
-        baseConfig(env),
+        baseConfig(),
         {
             devtool: 'source-map',
             entry: {
-                'app': './src/index.js'
+                'app': [
+                    join(paths.devapp, 'index.js'),
+                ]
             },
             output: {
                 path: paths.build,
@@ -36,30 +34,24 @@ export default env => {
             plugins: [
                 // Creates a manifest file that is Django compatible and read by the Django modules
                 new BundleTracker({
-                    //path: path.resolve('lib'),
-                    path: 'lib',
+                    path: paths.lib,
                     filename: 'webpack-stats.json',
                     logTime: false,
                     indent: 4,
                 }),
             ],
         },
-        partials.copyAssets(paths),
         {
             plugins: [
-                new webpack.DefinePlugin({
-                    DEV_LOGGING: JSON.stringify(true),
-                }),
+                new webpack.EnvironmentPlugin({
+                    DEV_LOGGING: true,
+                    NODE_ENV: env
+                })
             ],
         },
+        //We do not have sass in this project
         partials.loadCSS(),
-        partials.loadSCSS(),
-        partials.htmlWebpack('./dev/templates'),
-        partials.devServer({ 
-            hot: true, 
-            host: DOMAIN, 
-            port: PORT, 
-            base: paths.build
-        })
+        // activate devserver
+        watch ? devServerConfig() : {}
     )
 }
