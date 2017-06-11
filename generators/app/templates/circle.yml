@@ -31,8 +31,14 @@ test:
     - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
 
 deployment:
-  test:
 
+  production:
+    tag: /v[0-9]+\.[0-9]+(\.[0-9]+)?/
+    commands:
+      - npm run build
+      - npm publish --tag=latest
+
+  develop:
     branch: develop
     commands:
       - npm run build
